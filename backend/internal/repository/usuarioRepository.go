@@ -31,3 +31,18 @@ func (r *UsuarioRepository) CrearUsuario(usuario *models.Usuario) error {
     
 
 }
+
+func (r *UsuarioRepository) BuscarPorEmail(usuario *models.Usuario) (*models.Usuario, error){
+
+	var usuarioEmail models.Usuario
+	//Solicitar la informacion del usuario si existe el correo
+	err := r.db.Get(&usuarioEmail, "SELECT * FROM usuario WHERE email = $1", usuario.Email)
+
+	if err != nil {
+    	log.Fatal(err)
+		return nil, err // retorna error si no encuentra nada (sql.ErrNoRows)
+	}
+	return &usuarioEmail, nil
+}
+
+
